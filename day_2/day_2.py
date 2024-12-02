@@ -8,10 +8,6 @@ set safe count += 1 hten
 lets create 2 subfunctions
 len_montonic_
 
-
-We can further optimize by modifying longest increasing subsequnce algorithm by adding in 
-requirements for valid differences between indices and also check for longest decreasing subsequences
-
 with monotonic stack we get: 
 Part 1:
 time complexity: O(N*M)     (we do 2 montonic stack functions that are linear time for each M length row N times (number of rows))
@@ -20,15 +16,6 @@ space complexity: O(N*M)     we have 2 monotonic stack functions that have stack
 Part 2:
 time complexity: O(N*(M^2))     (we do 2 montonic stack functions that are linear time for each M length row N times (number of rows), and iterate over M rows M times to create splices)
 space complexity: O(N*(M^2))     we have 2 monotonic stack functions that have stack at max size M (number of rows), we also create M splices of of new rows 
-
-with LIS algo we can cut down time and space complexity for part 2
-Part 1:
-time complexity: O(N*M)     (we do 2 modified LIS functions that are linear time for each M length row N times (number of rows))
-space complexity: O(N*M)     we have 2 LIS functions that have M size array for LIS/LDS (number of rows)
-
-Part 2:
-time complexity: O(N*(M^2))      (we do 2 modified LIS functions that are linear time for each M length row N times (number of rows)) this isnt better nvm
-space complexity: O(N*(M))      we have 2 LIS functions that have M size array for LIS/LDS (number of rows) 
 '''
 
 def is_monotonic_decreasing(row):
@@ -135,44 +122,5 @@ def question_two():
     print(safe_count)
 
 
-def question_one_DP():
-    with open("day_2.txt") as f:
-        lines = f.read().split("\n")
-
-    safe_count = 0
-    valid_diffs = [1, 2, 3]
-
-    for line in lines:
-        vals = line.split()
-        row = [int(val) for val in vals]
-        '''
-        check if its initally a monotonically increasing or decreasing valid stack
-        '''
-        if longest_increasing_subsequence(row) == len(row) or longest_decreasing_subsequence(row) == len(row):
-            safe_count += 1
-
-    print(safe_count)
-
-def question_two_DP():
-    with open("day_2.txt") as f:
-        lines = f.read().split("\n")
-
-    safe_count = 0
-    valid_diffs = [1, 2, 3]
-
-    for line in lines:
-        vals = line.split()
-        row = [int(val) for val in vals]
-        '''
-        check if its initally a monotonically increasing or decreasing valid stack
-        '''
-        if longest_increasing_subsequence(row) >= len(row) - 1 or longest_decreasing_subsequence(row) >= len(row) - 1:
-            safe_count += 1
-
-    print(safe_count)
-
-
 question_one()
-question_one_DP()
 question_two()
-question_two_DP()
