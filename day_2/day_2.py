@@ -71,14 +71,14 @@ def longest_increasing_subsequence(row):
         return max(LIS)
 
 def longest_decreasing_subsequence(row):
-        LIS = [1] * len(row)
+        LDS = [1] * len(row)
         valid_diffs = [1, 2, 3]
 
         for i in range(1, len(row)):
             for j in range(i):
                 if row[i] < row[j] and abs(row[j] - row[i]) in valid_diffs:
-                    LIS[i] = max(LIS[i], 1 + LIS[j])
-        return max(LIS)
+                    LDS[i] = max(LDS[i], 1 + LDS[j])
+        return max(LDS)
 
 
 def question_one():
