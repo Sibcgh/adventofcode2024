@@ -27,7 +27,7 @@ time complexity: O(N*M)     (we do 2 modified LIS functions that are linear time
 space complexity: O(N*M)     we have 2 LIS functions that have M size array for LIS/LDS (number of rows)
 
 Part 2:
-time complexity: O(N*(M))      (we do 2 modified LIS functions that are linear time for each M length row N times (number of rows))
+time complexity: O(N*(M^2))      (we do 2 modified LIS functions that are linear time for each M length row N times (number of rows)) this isnt better nvm
 space complexity: O(N*(M))      we have 2 LIS functions that have M size array for LIS/LDS (number of rows) 
 '''
 
@@ -135,7 +135,7 @@ def question_two():
     print(safe_count)
 
 
-def question_one_optimized():
+def question_one_DP():
     with open("day_2.txt") as f:
         lines = f.read().split("\n")
 
@@ -153,7 +153,7 @@ def question_one_optimized():
 
     print(safe_count)
 
-def question_two_optimized():
+def question_two_DP():
     with open("day_2.txt") as f:
         lines = f.read().split("\n")
 
@@ -173,6 +173,6 @@ def question_two_optimized():
 
 
 question_one()
-question_one_optimized()
+question_one_DP()
 question_two()
-question_two_optimized()
+question_two_DP()
