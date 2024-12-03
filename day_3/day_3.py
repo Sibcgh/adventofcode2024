@@ -59,9 +59,8 @@ def question_two():
                     if nums:
                         a, b = map(int, nums[0])
                         cum_sum += a * b
-                word_match_flag = False  # Reset after processing mul
 
-    print("Cumulative sum:", cum_sum)
+    print(cum_sum)
 
 
 # Call the functions
