@@ -56,18 +56,14 @@ def count_x_mas_patterns(board):
         for i, diagonal in enumerate(diagonals):
             # Check if all cells are within board bounds
             is_valid = True
-            for x, y in diagonal:
-                if not (0 <= x < ROWS and 0 <= y < COLS):
-                    is_valid = False
-                    break
-            if is_valid:
+            if all((0 <= x < ROWS and 0 <= y < COLS) for x, y in diagonal):
                 # Check forward and reverse for MAS
                 cells = [board[x][y] for x, y in diagonal]
                 if cells == ['M', 'A', 'S'] or cells == ['S', 'A', 'M']:
                     valid_diagonals[i] = True
 
         # Only count if both diagonals form MAS
-        if valid_diagonals[0] and valid_diagonals[1]:
+        if all(valid_diagonals):
             count += 1
         return count
 
