@@ -154,10 +154,11 @@ def question_two():
         # Create a modified grid with the obstacle
         modified_grid = [list(row) for row in grid]
         modified_grid[pos[0]][pos[1]] = '#'
-
         # Check if placing the obstacle creates a cycle
         if check_cycle(modified_grid, start_pos, rows, cols):
             count += 1
+        modified_grid[pos[0]][pos[1]] = "."
+
 
     print(count)
 
