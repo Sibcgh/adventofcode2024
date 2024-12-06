@@ -52,7 +52,7 @@ def question_two():
             continue
 
         for i in range(row_len):
-            new_row = row[:i] + row[i+1:]
+            new_row = row[: i] + row[i + 1:]
             if is_monotonic(new_row, valid_diffs):
                 safe_count += 1
                 break
