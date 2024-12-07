@@ -17,10 +17,11 @@ iterate over the output and make sure that array indices line up with ordering i
 lets check if graph if item is out of order see if its index relative to
 
 '''
-
+import time
 from collections import deque, defaultdict
 
 def create_graph(rules, update):
+    # Create graph and indegree dictionary for the given update
     graph = defaultdict(list)
     indegree_dict = defaultdict(int)
     update_set = set(update)
@@ -37,9 +38,9 @@ def create_graph(rules, update):
 turns out u can just have a function return multiple types so thats chill
 '''
 def topo_sort(update, graph, indegree_dict, return_topo_order=False):
+    # Perform topological sort on the given graph
     q = deque([page for page in update if indegree_dict[page] == 0])
     res = []
-
 
     while q:
         curr_node = q.popleft()
@@ -78,6 +79,8 @@ def parse_file():
     return rules, updates
 
 def question_one():
+    start_time = time.time()  # Start timing
+
     rules, updates = parse_file()
 
     valid_lines = []
@@ -89,9 +92,16 @@ def question_one():
 
     mid_pages = [update[len(update)// 2] for update in valid_lines]
 
-    return sum(mid_pages)
+    result = sum(mid_pages)
+
+    end_time = time.time()  # End timing
+    print(f"question_one took {end_time - start_time:.6f} seconds")
+    
+    return result
 
 def question_two():
+    start_time = time.time()  # Start timing
+
     rules, updates = parse_file()
 
     invalid_lines = []
@@ -108,9 +118,17 @@ def question_two():
         fixed_order_list.append(topo_sort(update, curr_graph, curr_indegree_dict, return_topo_order=True))
 
     mid_pages = [update[len(update)// 2] for update in fixed_order_list]
-    return sum(mid_pages)
+    
+    result = sum(mid_pages)
 
-res1  = question_one()
+    end_time = time.time()  # End timing
+    print(f"question_two took {end_time - start_time:.6f} seconds")
+
+    return result
+
+# Run both questions
+res1 = question_one()
 print(res1)
+
 res2 = question_two()
 print(res2)

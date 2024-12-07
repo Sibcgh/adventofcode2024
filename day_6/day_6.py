@@ -20,11 +20,10 @@ we return len(set(visited))
 
 had a weird bug in part 2 wasnt iterating over proper set
 '''
-
+import time
 from collections import defaultdict
 
 def parse_file():
-    # Read the input
     with open("day_6.txt") as f:
         grid = f.read().splitlines()
 
@@ -42,7 +41,6 @@ def search(grid, start_pos, rows, cols):
     }
 
     visited = set()
-    path = []
     curr_x, curr_y, curr_dir = start_pos[0], start_pos[1], 3
 
     def is_valid(x, y):
@@ -50,32 +48,25 @@ def search(grid, start_pos, rows, cols):
 
     while is_valid(curr_x, curr_y):
         visited.add((curr_x, curr_y))
-        path.append((curr_x, curr_y))
         offset_x, offset_y = directions[curr_dir]
         next_x, next_y = curr_x + offset_x, curr_y + offset_y
 
         for _ in range(4):  # Try all 4 directions
             if not is_valid(next_x, next_y):
-                # If out of bounds, stop searching
-                return len(visited), path
+                return visited
 
             if grid[next_x][next_y] in ['.', '^']:
-                # Found a valid cell to move to
                 break
 
-            # Rotate and calculate the next position
             curr_dir = (curr_dir + 1) % 4
             offset_x, offset_y = directions[curr_dir]
             next_x, next_y = curr_x + offset_x, curr_y + offset_y
         else:
-            # If no valid move is found, stop searching
-            return len(visited), path
+            return visited
 
-        # Move to the valid cell
         curr_x, curr_y = next_x, next_y
 
-    return len(visited), path
-
+    return visited
 
 def check_cycle(grid, start_pos, rows, cols):
     directions = {
@@ -93,7 +84,7 @@ def check_cycle(grid, start_pos, rows, cols):
 
     while is_valid(curr_x, curr_y):
         if (curr_x, curr_y, curr_dir) in visited:
-            return True  # Cycle detected
+            return True
 
         visited.add((curr_x, curr_y, curr_dir))
         offset_x, offset_y = directions[curr_dir]
@@ -101,25 +92,20 @@ def check_cycle(grid, start_pos, rows, cols):
 
         for _ in range(4):  # Try all 4 directions
             if not is_valid(next_x, next_y):
-                break  # Out of bounds, rotate
-
-            if grid[next_x][next_y] in ['.', '^']:
-                # Found a valid move
                 break
 
-            # Rotate direction and recalculate the next cell
+            if grid[next_x][next_y] in ['.', '^']:
+                break
+
             curr_dir = (curr_dir + 1) % 4
             offset_x, offset_y = directions[curr_dir]
             next_x, next_y = curr_x + offset_x, curr_y + offset_y
         else:
-            # No valid moves found, exit
             return False
 
-        # Move to the next valid cell
         curr_x, curr_y = next_x, next_y
 
     return False
-
 
 def get_inputs():
     grid, rows, cols = parse_file()
@@ -137,31 +123,36 @@ def get_inputs():
     return grid, rows, cols, start_pos
 
 def question_one():
-    grid, rows, cols, start_pos = get_inputs()
-    res, _ = search(grid, start_pos, rows, cols)
-    print(res)
+    start_time = time.time()  # Start timing
 
+    grid, rows, cols, start_pos = get_inputs()
+    res = search(grid, start_pos, rows, cols)
+    print(len(res))
+
+    end_time = time.time()  # End timing
+    print(f"question_one took {end_time - start_time:.6f} seconds")
 
 def question_two():
+    start_time = time.time()  # Start timing
+
     grid, rows, cols, start_pos = get_inputs()
-    _, path = search(grid, start_pos, rows, cols)
+    path = search(grid, start_pos, rows, cols)
+    modified_grid = [list(row) for row in grid]
 
     count = 0
-    for pos in set(path):
+    for pos in path:
         if pos == start_pos:
-            continue  # Skip the starting position
-        
-        # Create a modified grid with the obstacle
-        modified_grid = [list(row) for row in grid]
+            continue
+
         modified_grid[pos[0]][pos[1]] = '#'
-        # Check if placing the obstacle creates a cycle
         if check_cycle(modified_grid, start_pos, rows, cols):
             count += 1
         modified_grid[pos[0]][pos[1]] = "."
 
-
     print(count)
 
+    end_time = time.time()  # End timing
+    print(f"question_two took {end_time - start_time:.6f} seconds")
 
 # Run both questions
 question_one()

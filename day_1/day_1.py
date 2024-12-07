@@ -28,8 +28,9 @@ def question_one():
     arr1 = sorted(arr1)
     arr2 = sorted(arr2)
     curr_sum = 0
-    for i in range(len(arr1)):
-        curr_sum += abs(arr1[i] - arr2[i])
+
+    for a, b in zip(arr1, arr2):
+        curr_sum += abs(a - b)
     print(curr_sum)
 
 def question_two():
