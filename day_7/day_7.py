@@ -4,96 +4,120 @@ looks like its backtracking and DP similar to
 target sum
 '''
 import math
+import time
 
-def isTargetSumPossible_combine(target, nums):
+
+def is_target_sum_possible(target, nums):
+    """
+    Determines if it is possible to reach the target using addition and multiplication.
+    Uses dynamic programming with caching.
+    """
     cache = {}
 
-    def search(indx, curr_sum):
-        if indx >= len(nums) and curr_sum != target:
-            return False
+    def search(index, curr_sum):
+        # Base cases
+        if index >= len(nums):
+            return curr_sum == target
 
-        if indx == len(nums) and curr_sum == target:
-            return True
+        if (index, curr_sum) in cache:
+            return cache[(index, curr_sum)]
 
-        if (indx, curr_sum) in cache:
-            return cache[(indx, curr_sum)]
+        # Option 1: Add nums[index] to curr_sum
+        opt1 = search(index + 1, curr_sum + nums[index])
 
-        opt1 = search(indx + 1, curr_sum * nums[indx] if curr_sum != 0 else nums[indx])
-        opt2 = search(indx + 1, curr_sum + nums[indx])
-        '''
-        fixed logic we concatenate everything from the left onto current index
-        we then search then with this as option
-        '''
-        concat_num = int(f"{curr_sum}{nums[indx]}")
-        opt3 = search(indx + 1, concat_num)
+        # Option 2: Multiply nums[index] with curr_sum (if curr_sum > 0)
+        opt2 = search(index + 1, curr_sum * nums[index] if curr_sum != 0 else nums[index])
 
-        cache[(indx, curr_sum)] = opt1 or opt2 or opt3
-        return cache[(indx, curr_sum)]
+        cache[(index, curr_sum)] = opt1 or opt2
+        return cache[(index, curr_sum)]
 
-    res = search(0, 0)
-    return res
+    return search(0, 0)
 
 
-
-def isTargetSumPossible(target, nums):
+def is_target_sum_possible_combine(target, nums):
+    """
+    Determines if it is possible to reach the target using addition, multiplication, 
+    or concatenation of numbers in the list.
+    Uses dynamic programming with caching.
+    """
     cache = {}
 
-    def search(indx, curr_sum):
-        if indx >= len(nums) and curr_sum != target:
-            return False
+    def search(index, curr_sum):
+        # Base cases
+        if index >= len(nums):
+            return curr_sum == target
 
-        if indx == len(nums) and curr_sum == target:
-            return True
+        if (index, curr_sum) in cache:
+            return cache[(index, curr_sum)]
 
-        if (indx, curr_sum) in cache:
-            return cache[(indx, curr_sum)]
+        # Option 1: Add nums[index] to curr_sum
+        opt1 = search(index + 1, curr_sum + nums[index])
 
-        opt1 = search(indx + 1, curr_sum * nums[indx] if indx > 0 else nums[indx])
-        opt2 = search(indx + 1, curr_sum + nums[indx])
-        cache[(indx, curr_sum)] = opt1 or opt2
-        return cache[(indx, curr_sum)]
+        # Option 2: Multiply nums[index] with curr_sum (if curr_sum > 0)
+        opt2 = search(index + 1, curr_sum * nums[index] if curr_sum != 0 else nums[index])
 
-    res = search(0, 0)
-    return res
+        # Option 3: Concatenate nums[index] to curr_sum
+        concat_num = int(f"{curr_sum}{nums[index]}")
+        opt3 = search(index + 1, concat_num)
+
+        cache[(index, curr_sum)] = opt1 or opt2 or opt3
+        return cache[(index, curr_sum)]
+
+    return search(0, 0)
+
 
 def parse_file():
-    # Read the input
+    """
+    Reads and parses the input file into targets and nums.
+    Expects each line to be in the format `target: num1 num2 num3`.
+    """
     with open("day_7.txt") as f:
         lines = f.read().splitlines()
 
-        targets, nums = [], []
+    targets, nums = [], []
 
-        for line in lines:
-            first, second = line.strip().split(':')[0], line.strip().split(':')[1]
-            target = int(first)
-            nums_list = list(map(int, second.split()))
-            targets.append(target)
-            nums.append(nums_list)
+    for line in lines:
+        target, numbers = line.strip().split(':')
+        targets.append(int(target))
+        nums.append(list(map(int, numbers.split())))
 
-        return zip(targets, nums)
+    return zip(targets, nums)
+
 
 def question_one():
+    """
+    Sums all targets for which the `is_target_sum_possible` function returns True.
+    """
     lines = parse_file()
-
     curr_sum = 0
+    start_time = time.time()
 
     for target, nums in lines:
-        if isTargetSumPossible(target, nums):
+        if is_target_sum_possible(target, nums):
             curr_sum += target
 
-    print(curr_sum)
+    end_time = time.time()
+    print(f"Question One Result: {curr_sum}")
+    print(f"Time Taken for Question One: {end_time - start_time:.2f} seconds")
+
 
 def question_two():
+    """
+    Sums all targets for which the `is_target_sum_possible_combine` function returns True.
+    """
     lines = parse_file()
-
     curr_sum = 0
+    start_time = time.time()
 
     for target, nums in lines:
-        if isTargetSumPossible_combine(target, nums):
+        if is_target_sum_possible_combine(target, nums):
             curr_sum += target
 
-    print(curr_sum)
+    end_time = time.time()
+    print(f"Question Two Result: {curr_sum}")
+    print(f"Time Taken for Question Two: {end_time - start_time:.2f} seconds")
 
-# question_one()
+
+# Run the questions
+question_one()
 question_two()
-
