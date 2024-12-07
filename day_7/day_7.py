@@ -57,8 +57,7 @@ def is_target_sum_possible_combine(target, nums):
         opt2 = search(index + 1, curr_sum * nums[index] if curr_sum != 0 else nums[index])
 
         # Option 3: Concatenate nums[index] to curr_sum
-        concat_num = int(f"{curr_sum}{nums[index]}")
-        opt3 = search(index + 1, concat_num)
+        opt3 = search(index + 1, int(f"{curr_sum}{nums[index]}"))
 
         cache[(index, curr_sum)] = opt1 or opt2 or opt3
         return cache[(index, curr_sum)]

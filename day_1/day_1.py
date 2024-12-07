@@ -37,7 +37,7 @@ def question_two():
     with open("day_1.txt") as f:
         lines = f.read().split("\n")
 
-    arr1 = []
+    arr1 = []w
     arr2 = []
     for line in lines:
         num_1, num_2 = line.split()

@@ -32,6 +32,9 @@ def parse_file():
 
     return grid, rows, cols
 
+def is_valid(x, y, rows, cols):
+    return 0 <= x < rows and 0 <= y < cols
+
 def search(grid, start_pos, rows, cols):
     directions = {
         0: (0, 1),   # Right
@@ -43,16 +46,13 @@ def search(grid, start_pos, rows, cols):
     visited = set()
     curr_x, curr_y, curr_dir = start_pos[0], start_pos[1], 3
 
-    def is_valid(x, y):
-        return 0 <= x < rows and 0 <= y < cols
-
-    while is_valid(curr_x, curr_y):
+    while is_valid(curr_x, curr_y, rows, cols):
         visited.add((curr_x, curr_y))
         offset_x, offset_y = directions[curr_dir]
         next_x, next_y = curr_x + offset_x, curr_y + offset_y
 
         for _ in range(4):  # Try all 4 directions
-            if not is_valid(next_x, next_y):
+            if not is_valid(next_x, next_y, rows, cols):
                 return visited
 
             if grid[next_x][next_y] in ['.', '^']:
@@ -79,10 +79,7 @@ def check_cycle(grid, start_pos, rows, cols):
     visited = set()
     curr_x, curr_y, curr_dir = start_pos[0], start_pos[1], 3
 
-    def is_valid(x, y):
-        return 0 <= x < rows and 0 <= y < cols
-
-    while is_valid(curr_x, curr_y):
+    while is_valid(curr_x, curr_y, rows, cols):
         if (curr_x, curr_y, curr_dir) in visited:
             return True
 
@@ -91,7 +88,7 @@ def check_cycle(grid, start_pos, rows, cols):
         next_x, next_y = curr_x + offset_x, curr_y + offset_y
 
         for _ in range(4):  # Try all 4 directions
-            if not is_valid(next_x, next_y):
+            if not is_valid(next_x, next_y, rows, cols):
                 break
 
             if grid[next_x][next_y] in ['.', '^']:

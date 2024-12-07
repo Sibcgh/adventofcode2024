@@ -53,18 +53,17 @@ simplier traversal and check if we can form MAS in each direction
 def count_x_mas_patterns(board):
     ROWS, COLS = len(board), len(board[0])
     x_mas_count = 0
-    diagonals = [
-        # Top-left to bottom-right diagonal
-        [(r - 1, c - 1), (r, c), (r + 1, c + 1)],
-        # Top-right to bottom-left diagonal
-        [(r - 1, c + 1), (r, c), (r + 1, c - 1)]
-    ]
-
 
     def is_valid(diagonal):
         return all(0 <= x < ROWS and 0 <= y < COLS for x, y in diagonal)
 
     def check_x_mas_pattern(r, c, count):
+        diagonals = [
+            # Top-left to bottom-right diagonal
+            [(r - 1, c - 1), (r, c), (r + 1, c + 1)],
+            # Top-right to bottom-left diagonal
+            [(r - 1, c + 1), (r, c), (r + 1, c - 1)]
+        ]
         # Check if both diagonals form MAS
         valid_diagonals = [False, False]
         for i, diagonal in enumerate(diagonals):
