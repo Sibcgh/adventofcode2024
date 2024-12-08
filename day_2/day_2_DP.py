@@ -9,6 +9,8 @@ time complexity: O(N*(M^2))      (we do 2 modified LIS functions that are linear
 space complexity: O(N*(M))      we have 2 LIS functions that have M size array for LIS/LDS (number of rows) 
 
 '''
+
+
 def longest_increasing_subsequence(row):
         LIS = [1] * len(row)
         valid_diffs = [1, 2, 3]
@@ -18,6 +20,7 @@ def longest_increasing_subsequence(row):
                 if row[i] > row[j] and abs(row[j] - row[i]) in valid_diffs:
                     LIS[i] = max(LIS[i], 1 + LIS[j])
         return max(LIS)
+
 
 def longest_decreasing_subsequence(row):
         LDS = [1] * len(row)
@@ -47,6 +50,7 @@ def question_one_DP():
             safe_count += 1
 
     print(safe_count)
+
 
 def question_two_DP():
     with open("day_2.txt") as f:

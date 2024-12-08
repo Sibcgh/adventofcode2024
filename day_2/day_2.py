@@ -18,6 +18,7 @@ time complexity: O(N*(M^2))     (we do 2 montonic stack functions that are linea
 space complexity: O(N*(M^2))     we have 2 monotonic stack functions that have stack at max size M (number of rows), we also create M splices of of new rows 
 '''
 
+
 def is_monotonic_decreasing(row):
     stack = []
     valid_diffs = [1, 2, 3]
@@ -32,6 +33,7 @@ def is_monotonic_decreasing(row):
 
     return len(stack) == len(row)
 
+
 def is_monotonic_increasing(row):
     stack = []
     valid_diffs = [1, 2, 3]
@@ -45,6 +47,7 @@ def is_monotonic_increasing(row):
         stack.append(i)
 
     return len(stack) == len(row)
+
 
 def question_one():
     with open("day_2.txt") as f:

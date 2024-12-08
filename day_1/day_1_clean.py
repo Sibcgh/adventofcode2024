@@ -1,5 +1,6 @@
 from collections import Counter
 
+
 def read_data(filename="day_1.txt"):
     """Helper function to read the file and return two sorted lists."""
     with open(filename) as f:
@@ -14,11 +15,13 @@ def read_data(filename="day_1.txt"):
     
     return sorted(arr1), sorted(arr2)
 
+
 def question_one():
     """Calculates the sum of absolute differences between sorted arrays."""
     arr1, arr2 = read_data()
     total_sum = sum(abs(a - b) for a, b in zip(arr1, arr2))
     print(total_sum)
+
 
 def question_two():
     """Calculates the weighted sum of the elements in arr1 based on their occurrences in arr2."""

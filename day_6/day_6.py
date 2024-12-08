@@ -23,6 +23,7 @@ had a weird bug in part 2 wasnt iterating over proper set
 import time
 from collections import defaultdict
 
+
 def parse_file():
     with open("day_6.txt") as f:
         grid = f.read().splitlines()
@@ -32,8 +33,10 @@ def parse_file():
 
     return grid, rows, cols
 
+
 def is_valid(x, y, rows, cols):
     return 0 <= x < rows and 0 <= y < cols
+
 
 def search(grid, start_pos, rows, cols):
     directions = {
@@ -67,6 +70,7 @@ def search(grid, start_pos, rows, cols):
         curr_x, curr_y = next_x, next_y
 
     return visited
+
 
 def check_cycle(grid, start_pos, rows, cols):
     directions = {
@@ -104,6 +108,7 @@ def check_cycle(grid, start_pos, rows, cols):
 
     return False
 
+
 def get_inputs():
     grid, rows, cols = parse_file()
 
@@ -119,6 +124,7 @@ def get_inputs():
 
     return grid, rows, cols, start_pos
 
+
 def question_one():
     start_time = time.time()  # Start timing
 
@@ -128,6 +134,7 @@ def question_one():
 
     end_time = time.time()  # End timing
     print(f"question_one took {end_time - start_time:.6f} seconds")
+
 
 def question_two():
     start_time = time.time()  # Start timing

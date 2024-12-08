@@ -3,6 +3,7 @@ import re
 # The regex pattern to match mul(xxx, xxx) and capture the numbers
 mul_pattern = r"mul\((\d{1,3}),(\d{1,3})\)"
 
+
 def question_one():
     """Sum the product of numbers in mul(xxx, xxx) from each line."""
     cum_sum = 0

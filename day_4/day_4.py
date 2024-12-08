@@ -1,6 +1,8 @@
 '''
 kinda like an exhaustive DFS search from leetcode word search
 '''
+
+
 def count_occurrences(board, word):
     ROWS, COLS = len(board), len(board[0])
     directions  = [
@@ -13,7 +15,8 @@ def count_occurrences(board, word):
                     (1, -1), 
                     (1, 1)
                   ]
-    
+
+
     # Return True if its a valid path within bounds and not in current path
     def is_valid(r, c, path):
         return (0 <= r < ROWS and 0 <= c < COLS and (r, c) not in path)

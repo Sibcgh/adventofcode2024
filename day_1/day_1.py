@@ -14,6 +14,7 @@ res += (key*val)
 return res
 '''
 
+
 def question_one():
     with open("day_1.txt") as f:
         lines = f.read().split("\n")
@@ -32,6 +33,7 @@ def question_one():
     for a, b in zip(arr1, arr2):
         curr_sum += abs(a - b)
     print(curr_sum)
+
 
 def question_two():
     with open("day_1.txt") as f:

@@ -20,6 +20,7 @@ lets check if graph if item is out of order see if its index relative to
 import time
 from collections import deque, defaultdict
 
+
 def create_graph(rules, update):
     # Create graph and indegree dictionary for the given update
     graph = defaultdict(list)
@@ -33,6 +34,7 @@ def create_graph(rules, update):
             indegree_dict[child] += 1
 
     return graph, indegree_dict
+
 
 '''
 turns out u can just have a function return multiple types so thats chill
@@ -59,6 +61,7 @@ def topo_sort(update, graph, indegree_dict, return_topo_order=False):
     else:
         return res
 
+
 def parse_file():
     # Read the input
     with open("day_5.txt") as f:
@@ -77,6 +80,7 @@ def parse_file():
     updates = [list(map(int, line.split(','))) for line in sections[1].strip().split('\n')]
 
     return rules, updates
+
 
 def question_one():
     start_time = time.time()  # Start timing
@@ -98,6 +102,7 @@ def question_one():
     print(f"question_one took {end_time - start_time:.6f} seconds")
     
     return result
+
 
 def question_two():
     start_time = time.time()  # Start timing
