@@ -1,12 +1,15 @@
 '''
 lets do an 0-1 bfs
 
+using this as the base
+https://leetcode.com/problems/minimum-obstacle-removal-to-reach-corner/
+
 make dict for neigbhours for each direction
 make dict for offset val for each direction
 '''
 
-import time
 from collections import defaultdict, deque
+import heapq
 
 # Direction dictionaries
 direction_dict = {
@@ -15,7 +18,6 @@ direction_dict = {
     'South': (1, 0),
     'North': (-1, 0)
 }
-
 
 # Direction neighbours dictionaries
 direction_neighbours = {
@@ -30,7 +32,7 @@ def parse_input():
         grid = f.read().splitlines()
     rows = len(grid)
     cols = len(grid[0]) if rows > 0 else 0
-    
+
     start_position = None
     end_position = None
 
@@ -43,76 +45,62 @@ def parse_input():
 
     return grid, rows, cols, start_position, end_position
 
-# Utility function
 def is_valid(grid, r, c, rows, cols):
     return 0 <= r < rows and 0 <= c < cols and grid[r][c] != "#"
 
-
-'''
-TODO fix 01 bfs function to return 
-final generate score
-
-pass in grid, rows, cols, start_pos, end_pos
-
-return final result
-'''
-def bfs(grid):
+def bfs(grid, rows, cols, start_pos, end_pos):
+    # Initialize visited set to track (position, direction) combinations
+    visited = set()
     
-    '''
-    soln using bfs 0-1
-    if we have nodes that only have weights that can be either 
-    0 or 1 we can shift to using a bfs instead of djikstra
-    this will improve our runtime from mnlogmn to mn 
+    # Use a priority queue (deque in this case) to store (cost, row, col, direction)
+    q = deque()
+    
+    # Start facing East and try all initial directions with appropriate costs
+    for initial_dir in ['East', 'North', 'South']:
+        initial_cost = 0 if initial_dir == 'East' else 1000  # Cost 1000 if we need to turn first
+        q.append((initial_cost, start_pos[0], start_pos[1], initial_dir))
+    
+    # Dictionary to store minimum cost for each (position, direction) combination
+    dist = defaultdict(lambda: float('inf'))
+    for dir in ['East', 'North', 'South']:
+        dist[(start_pos[0], start_pos[1], dir)] = 0 if dir == 'East' else 1000
 
-    https://cp-algorithms.com/graph/01_bfs.html
-    '''
-    rows = len(grid)
-    cols = len(grid[0])
-
-    '''
-    TODO
-    fix this
-    '''
-    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
-
-
-    # TODO lets change dist to cost
-    # Distance array to track minimum obstacles encountered to reach each cell
-    dist = [[float('inf')] * cols for _ in range(rows)]
-
-    # TODO should be starting position cost (0) and starting pos
-    dist[0][0] = grid[0][0]  # Initialize start position
-
-    # TODO
-    q = deque([(dist[0][0], 0, 0)])  # Store (total cost so far, r, c, current directio
-
+    min_end_cost = float('inf')
+    
     while q:
-        curr_count, curr_r, curr_c = q.popleft()
-
-        # TODO fix:
-        # if we reached the end position we return
-        # If we reach the bottom-right corner, return the result
-        if (curr_r, curr_c) == (rows - 1, cols - 1):
-            return curr_count
-
+        curr_cost, curr_r, curr_c, curr_direction = q.popleft()
         
-    
+        # Skip if we've seen this state with a lower cost
+        if curr_cost > dist[(curr_r, curr_c, curr_direction)]:
+            continue
+            
+        # If we reached the end, update minimum cost if needed
+        if (curr_r, curr_c) == end_pos:
+            min_end_cost = min(min_end_cost, curr_cost)
+            continue
 
-        for dx, dy in directions:
-            next_r, next_c = curr_r + dx, curr_c + dy
-            if is_valid(next_r, next_c):
-                next_count = curr_count + grid[next_r][next_c]
-                if next_count < dist[next_r][next_c]:
-                    dist[next_r][next_c] = next_count
-                    # Use deque's appendleft for 0-weight cells to prioritize them
-                    if grid[next_r][next_c] == 0:
-                        q.appendleft((next_count, next_r, next_c))
-                    else:
-                        q.append((next_count, next_r, next_c))
+        # Try all possible next directions based on current direction
+        for next_direction in direction_neighbours[curr_direction]:
+            dr, dc = direction_dict[next_direction]
+            next_r, next_c = curr_r + dr, curr_c + dc
+            
+            if not is_valid(grid, next_r, next_c, rows, cols):
+                continue
+                
+            # Calculate new cost - 1000 for rotation, 1 for moving forward
+            next_cost = curr_cost + 1 + (1000 if next_direction != curr_direction else 0)
+            
+            # If we found a better path to this state
+            if next_cost < dist[(next_r, next_c, next_direction)]:
+                dist[(next_r, next_c, next_direction)] = next_cost
+                # Prioritize straight moves over turns
+                if next_direction == curr_direction:
+                    q.appendleft((next_cost, next_r, next_c, next_direction))
+                else:
+                    q.append((next_cost, next_r, next_c, next_direction))
 
-    return 0
+    return min_end_cost
 
-
-'''
-
-'''
+grid, rows, cols, start_position, end_position = parse_input()
+res = bfs(grid, rows, cols, start_position, end_position)
+print(res)
