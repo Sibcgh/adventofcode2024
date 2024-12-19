@@ -10,56 +10,52 @@ if we can word break is possible return true
 count up all possible valid word breaks
 
 '''
+import time
 from collections import defaultdict
 
 def patternBreak(s, designSet):
     """
-    Count the number of ways to segment the string `s` using the given `wordDict`.
+    Determine if the string `s` can be segmented into valid patterns from `designSet`.
     """
     cache = {}
 
     def backtrack(i):
-        if i == len(s):  # Base case: reached the end of the string
+        if i == len(s):
             return True
-
-        if i in cache:  # Retrieve cached result
+        if i in cache:
             return cache[i]
-
         for j in range(i, len(s)):
-            curr_pattern = s[i: j + 1]  # Slice the substring
-            if curr_pattern in designSet and backtrack(j + 1):  # If valid pattern and remainder is valid
-                cache[i] = True  # Cache and return early
+            curr_pattern = s[i:j + 1]
+            if curr_pattern in designSet and backtrack(j + 1):
+                cache[i] = True
                 return True
-
-        cache[i] = False  # Cache result for the current index
+        cache[i] = False
         return False
 
     return backtrack(0)
 
+
 def patternBreakCount(s, designSet):
     """
-    Count the number of ways to segment the string `s` using the given `wordDict`.
+    Count the number of ways to segment the string `s` using the given `designSet`.
     """
     cache = {}
 
     def backtrack(i):
-        if i == len(s):  # Base case: reached the end of the string
+        if i == len(s):
             return 1
-
-        if i in cache:  # Retrieve cached result
+        if i in cache:
             return cache[i]
-
-
         curr_count = 0
         for j in range(i, len(s)):
-            curr_pattern = s[i: j + 1]  # Slice the substring
+            curr_pattern = s[i:j + 1]
             if curr_pattern in designSet:
-                curr_count += backtrack(j + 1) # Check remainder of the string
-
-        cache[i] = curr_count  # Cache result for the current index
+                curr_count += backtrack(j + 1)
+        cache[i] = curr_count
         return cache[i]
 
     return backtrack(0)
+
 
 def read_file(filename="day_19.txt"):
     """Reads the input file and returns the chunks."""
@@ -68,32 +64,36 @@ def read_file(filename="day_19.txt"):
 
 
 def question1():
+    """
+    Count the number of strings in chunk 2 that can be segmented.
+    """
     chunks = read_file()
-
     design_set = set(design.strip() for design in chunks[0].strip().split(','))
-    possible_pattern = chunks[1].splitlines()
+    possible_patterns = chunks[1].splitlines()
 
-    count = 0
+    start_time = time.time()  # Start timer
+    count = sum(1 for p in possible_patterns if patternBreak(p, design_set))
+    end_time = time.time()  # End timer
 
-    for p in possible_pattern:
-        if patternBreak(p, design_set):
-            count += 1
-
-    print(count)
+    print(f"Question 1: {count}")
+    print(f"Execution Time: {end_time - start_time:.6f} seconds")
 
 
 def question2():
+    """
+    Count the total number of valid segmentations for all strings in chunk 2.
+    """
     chunks = read_file()
-
     design_set = set(design.strip() for design in chunks[0].strip().split(','))
-    possible_pattern = chunks[1].splitlines()
+    possible_patterns = chunks[1].splitlines()
 
-    count = 0
+    start_time = time.time()  # Start timer
+    count = sum(patternBreakCount(p, design_set) for p in possible_patterns)
+    end_time = time.time()  # End timer
 
-    for p in possible_pattern:
-        count += patternBreakCount(p, design_set)
+    print(f"Question 2: {count}")
+    print(f"Execution Time: {end_time - start_time:.6f} seconds")
 
-    print(count)
 
-# question1()
+question1()
 question2()
