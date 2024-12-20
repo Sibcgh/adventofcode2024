@@ -1,16 +1,3 @@
-'''
-looks like a bfs
-how do we want to do this?
-
-
-first lets work on the example
-lets construct an inplace grid
-of 0-6 width and height of '.'
-
-parse over input and generate a new graph where
-we replace each '.' with corresponding '#'
-
-'''
 import time
 from collections import deque
 
@@ -32,6 +19,12 @@ def fill_grid_vals(grid, walls, slice_count):
     """Fill grid with '#' up to the specified slice_count based on wall positions."""
     for c, r in walls[:slice_count]:
         grid[r][c] = "#"
+
+
+def remove_wall(grid, walls, index):
+    """Remove a wall at a specific index from walls."""
+    c, r = walls[index]
+    grid[r][c] = "."  # Replace the wall '#' with '.'
 
 
 def is_valid(r, c, rows, cols):
@@ -86,19 +79,23 @@ def question2():
     walls_list = parse_input()
     grid, rows, cols = create_2d_grid(length=71, width=71)
 
+    # Fill grid initially with all walls
+    fill_grid_vals(grid, walls_list, slice_count=len(walls_list))
+
     start_time = time.time()
     res = 0
 
-    for index in range(1, len(walls_list) + 1):
-        fill_grid_vals(grid, walls_list, slice_count=index)
-        if not bfs(grid, rows, cols):  # If no path is found
-            res = index  # Record the index that causes the path to be blocked
+    # Traverse walls list backwards and remove walls, checking for BFS after each removal
+    for index in range(len(walls_list) - 1, -1, -1):
+        remove_wall(grid, walls_list, index)  # Remove wall at current index
+        if bfs(grid, rows, cols) != 0:  # If a valid path exists after removal
+            res = index  # Record the index at which path becomes possible again
             break
 
     end_time = time.time()
 
-    print(f"Answer for Question 2: {walls_list[res - 1]}")  # Print the coordinates of the blocking byte
-    print(f"Index that blocks the path: {res - 1}")
+    print(f"Answer for Question 2: {walls_list[res]}")
+    print(f"Index that makes a path possible: {res}")
     print(f"Execution time for Question 2: {end_time - start_time:.6f} seconds")
 
 
