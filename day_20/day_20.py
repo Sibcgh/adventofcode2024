@@ -31,7 +31,7 @@ def is_valid(r, c, rows, cols):
     return 0 <= r < rows and 0 <= c < cols
 
 
-def bfs(grid, rows, cols, start_position):
+def bfs(grid, rows, cols, start_position, end_position):
     directions = [(1, 0), (-1, 0), (0, -1), (0, 1)]
     start_r, start_c = start_position
 
@@ -46,7 +46,7 @@ def bfs(grid, rows, cols, start_position):
         curr_r, curr_c = queue.popleft()
 
         # If we reached the end, return its distance
-        if grid[curr_r][curr_c] == "E":
+        if grid[curr_r][curr_c] == end_position:
             break
 
         for dr, dc in directions:
@@ -61,8 +61,8 @@ def bfs(grid, rows, cols, start_position):
     return dists
 
 
-def search(grid, rows, cols, start_position):
-    dists = bfs(grid, rows, cols, start_position)
+def search(grid, rows, cols, start_position, end_position):
+    dists = bfs(grid, rows, cols, start_position, end_position)
 
     count = 0
     neigh_directions = [(2, 0), (1, 1), (0, 2), (-1, 1)]
@@ -83,8 +83,8 @@ def search(grid, rows, cols, start_position):
     print(count)
 
 
-def search2(grid, rows, cols, start_position):
-    dists = bfs(grid, rows, cols, start_position)
+def search2(grid, rows, cols, start_position, end_position):
+    dists = bfs(grid, rows, cols, start_position, end_position)
 
     count = 0
 
@@ -109,20 +109,20 @@ def search2(grid, rows, cols, start_position):
 
 
 def question1():
-    grid, rows, cols, start_position, _ = parse_input()
+    grid, rows, cols, start_position, end_position = parse_input()
     
     start_time = time.time()
-    search(grid, rows, cols, start_position=start_position)
+    search(grid, rows, cols, start_position, end_position)
     end_time = time.time()
     
     print(f"Question 1 execution time: {end_time - start_time:.4f} seconds")
 
 
 def question2():
-    grid, rows, cols, start_position, _ = parse_input()
+    grid, rows, cols, start_position, end_position = parse_input()
     
     start_time = time.time()
-    search2(grid, rows, cols, start_position=start_position)
+    search2(grid, rows, cols, start_position, end_position)
     end_time = time.time()
     
     print(f"Question 2 execution time: {end_time - start_time:.4f} seconds")
