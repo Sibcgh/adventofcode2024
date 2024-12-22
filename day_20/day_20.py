@@ -97,7 +97,12 @@ def search2(grid, rows, cols, start_position, end_position):
                 for dr in range(radius + 1):
                     dc = radius - dr
                     # some weird issue where i cant multiply directly so used hypernuterino soln
-                    for next_r, next_c in {(r + dr, c + dc), (r + dr, c - dc), (r - dr, c + dc), (r - dr, c - dc)}:
+                    unique_positions = set()
+                    for dr, dc in [(dr, dc), (dr, -dc), (-dr, dc), (-dr, -dc)]:
+                        unique_positions.add((dr, dc))
+                    
+                    for dr, dc in unique_positions:
+                        next_r, next_c = r + dr, c + dc
                         if not is_valid(next_r, next_c, rows, cols):
                             continue
                         if grid[next_r][next_c] == "#":
