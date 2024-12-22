@@ -96,7 +96,6 @@ def search2(grid, rows, cols, start_position, end_position):
             for radius in range(2, 21):
                 for dr in range(radius + 1):
                     dc = radius - dr
-                    # some weird issue where i cant multiply directly so used hypernuterino soln
                     unique_positions = set()
                     for dr, dc in [(dr, dc), (dr, -dc), (-dr, dc), (-dr, -dc)]:
                         unique_positions.add((dr, dc))
