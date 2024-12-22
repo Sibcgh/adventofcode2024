@@ -85,29 +85,28 @@ def search(grid, rows, cols, start_position, end_position):
 
 def search2(grid, rows, cols, start_position, end_position):
     dists = bfs(grid, rows, cols, start_position, end_position)
-
     count = 0
-
+    multipliers = [(1, 1), (-1, 1), (1, -1), (-1, -1)]
 
     for r in range(rows):
         for c in range(cols):
             if grid[r][c] == "#":
                 continue
             for radius in range(2, 21):
+                unique_positions = set()
                 for dr in range(radius + 1):
                     dc = radius - dr
-                    unique_positions = set()
-                    for dr, dc in [(dr, dc), (dr, -dc), (-dr, dc), (-dr, -dc)]:
-                        unique_positions.add((dr, dc))
-                    
-                    for dr, dc in unique_positions:
-                        next_r, next_c = r + dr, c + dc
-                        if not is_valid(next_r, next_c, rows, cols):
-                            continue
-                        if grid[next_r][next_c] == "#":
-                            continue
-                        if (dists[r][c] - dists[next_r][next_c]) >= 100 + radius:
-                            count += 1
+                    for multiplier_r, multiplier_c in multipliers:
+                        unique_positions.add((dr * multiplier_r, dc * multiplier_c))
+                
+                for dr, dc in unique_positions:
+                    next_r, next_c = r + dr, c + dc
+                    if not is_valid(next_r, next_c, rows, cols):
+                        continue
+                    if grid[next_r][next_c] == "#":
+                        continue
+                    if (dists[r][c] - dists[next_r][next_c]) >= 100 + radius:
+                        count += 1
 
     print(count)
 
