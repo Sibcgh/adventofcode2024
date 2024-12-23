@@ -37,11 +37,11 @@ def largest_clique_original(edges):
     and return that graph as a list of edges
     '''
     # Build the adjacency list from the list of edges
-    graph = {}
+    graph = defaultdict(list)
     for edge in edges:
         u, v = edge
-        graph.setdefault(u, []).append(v)
-        graph.setdefault(v, []).append(u)
+        graph[u].append(v)
+        graph[v].append(u)
 
     # Check if a set of nodes forms a clique
     def is_clique(nodes):
