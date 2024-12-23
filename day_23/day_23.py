@@ -98,9 +98,8 @@ def search_connected(graph):
     return result set
     '''
     res = set()
-    for node in graph:
+    for node, neighbors in graph.items():
         if node[0] == "t":
-            neighbors = graph[node]
             for i in range(len(neighbors)):
                 for j in range(i + 1, len(neighbors)):
                     n1, n2 = neighbors[i], neighbors[j]
