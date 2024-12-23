@@ -100,15 +100,18 @@ def search_connected(graph):
     res = set()
     for node, neighbors in graph.items():
         if node[0] == "t":
-            for i in range(len(neighbors)):
-                for j in range(i + 1, len(neighbors)):
-                    n1, n2 = neighbors[i], neighbors[j]
-                    if n1 in graph[n2] and n2 in graph[n1]:
-                        res.add(tuple(sorted([node, n1, n2])))
+            for n1, n2 in combinations(neighbors, 2):
+                if n1 in graph[n2] and n2 in graph[n1]:
+                    res.add(tuple(sorted([node, n1, n2])))
     return res
 
 
 def largest_clique(edges):
+    '''
+    iterate over a list of edges and generate the largest complete graph possible
+    using networkx because this is much faster than manually doing it using 
+    combinations and creating the permutations manually in python
+    '''
     # Create a graph from the list of edges
     G = nx.Graph()
     G.add_edges_from(edges)
@@ -121,10 +124,11 @@ def largest_clique(edges):
 
     return largest_clique
 
-'''
-return edges sorted alphabetically and return them comma seperated
-'''
+
 def sorted_graph_nodes(edges):
+    '''
+    return edges sorted alphabetically and return them comma seperated
+    '''
     return ",".join(sorted(edges))
 
 
