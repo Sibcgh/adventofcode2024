@@ -145,7 +145,5 @@ def question2():
     end_time = time.time()
     print(f"Question 2 executed in {end_time - start_time:.4f} seconds")
 
-edges = parse_input_edges()
-out_edges = largest_clique(edges)
-print(out_edges)
-print(sorted_graph_nodes(out_edges))
+question1()
+question2()
