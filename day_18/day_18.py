@@ -85,12 +85,20 @@ def question2():
     start_time = time.time()
     res = 0
 
-    # Traverse walls list backwards and remove walls, checking for BFS after each removal
-    for index in range(len(walls_list) - 1, -1, -1):
-        remove_wall(grid, walls_list, index)  # Remove wall at current index
-        if bfs(grid, rows, cols) != 0:  # If a valid path exists after removal
-            res = index  # Record the index at which path becomes possible again
-            break
+    # Use binary search to find the index at which a path becomes possible
+    left, right = 0, len(walls_list) - 1
+
+    while left <= right:
+        mid = (left + right) // 2
+        # Create a new grid and fill it up to the mid index
+        grid, _, _ = create_2d_grid(length=71, width=71)
+        fill_grid_vals(grid, walls_list, slice_count=mid)
+
+        if bfs(grid, rows, cols) != 0:  # If a valid path exists
+            res = mid  # Record the mid index
+            right = mid - 1  # Try to find a smaller index
+        else:
+            left = mid + 1  # Try to find a larger index
 
     end_time = time.time()
 
