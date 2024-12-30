@@ -54,7 +54,6 @@ def question_one():
         lines = f.read().split("\n")
 
     safe_count = 0
-    valid_diffs = [1, 2, 3]
 
     for line in lines:
         vals = line.split()

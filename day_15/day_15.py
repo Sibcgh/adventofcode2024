@@ -38,61 +38,8 @@ def parse_input(filename="day_15.txt"):
     movements = [char for char in chunks[1] if char in directions_dict]
 
     return grid, rows, cols, starting_position, movements
-
-def parse_inputs_large(filename="day_15.txt"):
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    filepath = os.path.join(current_dir, filename)
-    with open(filepath) as f:
-      chunks = f.read().strip().split("\n\n")
-      
-    '''
-    create input grid and then we will have a res grid that will extend
-    input grid by *2 for each char in row
-    '''
-    input_grid = [list(line) for line in chunks[0].split("\n")]
-    
-    input_rows = len(input_grid)
-    input_cols = len(input_grid[0])    
-
-    grid = []
-
-    for r in range(input_rows):
-        curr_row = []
-        for c in range(input_cols):
-            if input_grid[r][c] == "@":
-                starting_position = (r, c)
-                curr_row.extend(['@','.'])
-            elif input_grid[r][c] == "#":
-                curr_row.extend(['#','#'])
-            elif input_grid[r][c] == ".":
-                curr_row.extend(['.','.'])
-            elif input_grid[r][c] == "O":
-                curr_row.extend(['O','O'])
-        grid.append(curr_row)
-        
-    starting_position = None
-    
-    rows = len(grid)
-    cols = len(grid[0])
-    
-    for r in range(rows):
-        for c in range(cols):
-            if grid[r][c] == "@":
-                starting_position = (r, c)
-                grid[r][c] = "."
-                break
-        if starting_position:
-            break
-        
-    
-    movements = [char for char in chunks[1] if char in directions_dict]
-
-    return grid, rows, cols, starting_position, movements
     
     
-    
-
-
 def shift_left_box(arr):
     first_dot = None
     for i, val in enumerate(arr):
@@ -205,42 +152,7 @@ def question1():
 
 
 def question2():
-    grid, rows, cols, starting_position, movements = parse_inputs_large()
-    new_grid = [row[:] for row in grid]
-    for r in range(rows):
-        print(*new_grid[r], sep=' ')
-
-
-    print('\n\n')
-
-    new_grid = traverse(new_grid, rows, cols, starting_position, movements)
-    for r in range(rows):
-        print(*new_grid[r], sep=' ')
-
-
-
-    """
-    iterate through the grid and find all groupings of 00
-    store the leftmost r,c value in a set with key being (r1,c1,r2,c2)
-    
-    iterate over the set and score += r1*100 + c1
-    """
-
-    score = 0
-    visited = set()
-    for r in range(rows):
-      for c in range(cols):
-        if new_grid[r][c] == "0":
-            if (r, c) not in visited:
-                r1, c1 = r, c
-                if c + 1 < cols and new_grid[r][c + 1] == "0":
-                    visited.add((r, c, r, c + 1))   
-                    
-                    
-    for r, c, _, _ in visited:
-        score += r*100 + c
-         
-    print(score)
+    pass
 
 question1()
 
